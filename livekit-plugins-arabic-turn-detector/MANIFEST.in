@@ -1,0 +1,4 @@
+include README.md
+include LICENSE
+include requirements.txt
+recursive-include livekit_plugins_arabic_turn_detector *.py

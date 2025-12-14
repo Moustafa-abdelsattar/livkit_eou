@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+
+# Environment Variables
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Model files (download from HuggingFace)
+models/
+
+# Training outputs
+training/output/
+*.onnx
+*.pth
+*.bin
+
+# Data
+data/.git/
+
+# Logs
+*.log
+.claude/

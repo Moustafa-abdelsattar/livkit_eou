@@ -1,0 +1,18 @@
+# Core LiveKit Agent
+livekit
+livekit-agents
+livekit-plugins-deepgram
+livekit-plugins-elevenlabs
+livekit-plugins-openai
+livekit-plugins-silero
+livekit-plugins-groq
+
+# LLM and AI
+openai
+groq
+
+# Environment
+python-dotenv
+
+# Utilities
+aiohttp
