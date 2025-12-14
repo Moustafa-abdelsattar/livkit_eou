@@ -1,5 +1,23 @@
 # Dataset Documentation
 
+## Processed Dataset
+
+**Arabic EOU Dataset for Turn Detection**
+
+- **HuggingFace**: [Moustafa3092/EOU](https://huggingface.co/datasets/Moustafa3092/EOU)
+- **Size**: 57,475 processed samples
+- **Format**: Instruction-tuning format (Alpaca style)
+- **License**: Apache 2.0
+- **Purpose**: End-of-Utterance detection for Arabic conversational AI
+
+### Usage
+
+```python
+from datasets import load_dataset
+
+dataset = load_dataset("Moustafa3092/EOU")
+```
+
 ## Source Dataset
 
 **SADA 2022 - Saudi Dialectal Arabic Corpus**
@@ -194,6 +212,36 @@ This will:
 3. Add Arabic edge cases
 4. Create balanced training set
 5. Save to `data/train.json`
+
+## Citation
+
+If you use this dataset, please cite:
+
+```bibtex
+@dataset{arabic_eou_dataset_2024,
+  author = {Abdelsattar, Moustafa},
+  title = {Arabic EOU Dataset for Turn Detection},
+  year = {2024},
+  publisher = {HuggingFace},
+  url = {https://huggingface.co/datasets/Moustafa3092/EOU},
+  note = {Processed from SADA 2022 dataset}
+}
+
+@dataset{sada2022,
+  title = {SADA 2022: Saudi Dialectal Arabic Corpus},
+  author = {SDAIA},
+  year = {2022},
+  publisher = {Kaggle},
+  url = {https://www.kaggle.com/datasets/sdaiancai/sada2022}
+}
+```
+
+## Links
+
+- **Processed Dataset**: [HuggingFace - Moustafa3092/EOU](https://huggingface.co/datasets/Moustafa3092/EOU)
+- **Source Dataset**: [Kaggle - SADA 2022](https://www.kaggle.com/datasets/sdaiancai/sada2022)
+- **Model**: [HuggingFace - Moustafa3092/livekit-turn-detector-arabic](https://huggingface.co/Moustafa3092/livekit-turn-detector-arabic)
+- **Repository**: [GitHub - livkit_eou](https://github.com/Moustafa-abdelsattar/livkit_eou)
 
 ---
 

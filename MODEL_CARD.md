@@ -31,6 +31,8 @@ Base Model: Qwen2-0.5B (524M parameters)
 
 ### Dataset
 
+**Processed Dataset**: [Moustafa3092/EOU](https://huggingface.co/datasets/Moustafa3092/EOU) on HuggingFace
+
 **Source**: [SADA 2022](https://www.kaggle.com/datasets/sdaiancai/sada2022) - Saudi Dialectal Arabic Corpus
 
 **Processing**:
@@ -257,6 +259,15 @@ RUN pip install livekit-plugins-arabic-turn-detector
   note = {Fine-tuned on SADA 2022 dataset}
 }
 
+@dataset{arabic_eou_dataset_2024,
+  author = {Abdelsattar, Moustafa},
+  title = {Arabic EOU Dataset for Turn Detection},
+  year = {2024},
+  publisher = {HuggingFace},
+  url = {https://huggingface.co/datasets/Moustafa3092/EOU},
+  note = {Processed from SADA 2022 dataset}
+}
+
 @dataset{sada2022,
   title = {SADA 2022: Saudi Dialectal Arabic Corpus},
   author = {SDAIA},
@@ -266,11 +277,12 @@ RUN pip install livekit-plugins-arabic-turn-detector
 }
 ```
 
-## Contact
+## Links
 
-- **Repository**: https://github.com/Moustafa-abdelsattar/livkit_eou
-- **Issues**: https://github.com/Moustafa-abdelsattar/livkit_eou/issues
-- **Model**: https://huggingface.co/Moustafa3092/livekit-turn-detector-arabic
+- **Model**: [HuggingFace - Moustafa3092/livekit-turn-detector-arabic](https://huggingface.co/Moustafa3092/livekit-turn-detector-arabic)
+- **Dataset**: [HuggingFace - Moustafa3092/EOU](https://huggingface.co/datasets/Moustafa3092/EOU)
+- **Repository**: [GitHub - livkit_eou](https://github.com/Moustafa-abdelsattar/livkit_eou)
+- **Issues**: [GitHub Issues](https://github.com/Moustafa-abdelsattar/livkit_eou/issues)
 
 ## Changelog
 

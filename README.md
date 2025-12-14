@@ -77,11 +77,24 @@ livekit-voice-agent/
 
 ## Dataset
 
-### Source
+### Processed Dataset
+
+**Arabic EOU Dataset** - [HuggingFace](https://huggingface.co/datasets/Moustafa3092/EOU)
+- **Dataset**: [Moustafa3092/EOU](https://huggingface.co/datasets/Moustafa3092/EOU)
+- **Size**: 57,475 processed samples
+- **Format**: Instruction-tuning (Alpaca style)
+- **License**: Apache 2.0
+
+```python
+from datasets import load_dataset
+dataset = load_dataset("Moustafa3092/EOU")
+```
+
+### Source Dataset
 
 **SADA 2022** - Saudi Dialectal Arabic Corpus
 - **Source**: [Kaggle - SADA 2022](https://www.kaggle.com/datasets/sdaiancai/sada2022)
-- **Size**: 57,475 processed samples
+- **Original Size**: Large-scale conversational corpus
 - **License**: Open (Kaggle)
 
 ### Data Processing
@@ -319,6 +332,15 @@ If you use this model or dataset, please cite:
   note = {Fine-tuned on SADA 2022 dataset}
 }
 
+@dataset{arabic_eou_dataset_2024,
+  author = {Abdelsattar, Moustafa},
+  title = {Arabic EOU Dataset for Turn Detection},
+  year = {2024},
+  publisher = {HuggingFace},
+  url = {https://huggingface.co/datasets/Moustafa3092/EOU},
+  note = {Processed from SADA 2022 dataset}
+}
+
 @dataset{sada2022,
   title = {SADA 2022: Saudi Dialectal Arabic Corpus},
   author = {SDAIA},
@@ -341,10 +363,11 @@ Apache 2.0
 
 ## Links
 
-- **Model**: [HuggingFace](https://huggingface.co/Moustafa3092/livekit-turn-detector-arabic)
-- **Repository**: [GitHub](https://github.com/Moustafa-abdelsattar/livkit_eou)
+- **Model**: [HuggingFace - Moustafa3092/livekit-turn-detector-arabic](https://huggingface.co/Moustafa3092/livekit-turn-detector-arabic)
+- **Dataset (Processed)**: [HuggingFace - Moustafa3092/EOU](https://huggingface.co/datasets/Moustafa3092/EOU)
+- **Dataset (Source)**: [Kaggle - SADA 2022](https://www.kaggle.com/datasets/sdaiancai/sada2022)
+- **Repository**: [GitHub - livkit_eou](https://github.com/Moustafa-abdelsattar/livkit_eou)
 - **Base Model**: [LiveKit Turn Detector](https://huggingface.co/livekit/turn-detector)
-- **Dataset**: [SADA 2022](https://www.kaggle.com/datasets/sdaiancai/sada2022)
 
 ## Contributing
 
