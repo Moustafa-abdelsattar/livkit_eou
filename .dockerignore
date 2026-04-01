@@ -1,0 +1,11 @@
+.git
+.github
+__pycache__
+*.pyc
+*.egg-info
+dist/
+build/
+.env.local
+eou_arabic.zip
+tests/
+*.md

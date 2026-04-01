@@ -1,0 +1,17 @@
+services:
+  arabic-turn-detector:
+    build: .
+    container_name: arabic-eou-agent
+    env_file:
+      - .env.local
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    # Uncomment for GPU support:
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
