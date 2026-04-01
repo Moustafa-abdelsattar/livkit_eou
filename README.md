@@ -3,7 +3,8 @@
 [![Model on HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97%20HuggingFace-Model-blue)](https://huggingface.co/Moustafa3092/livekit-turn-detector-arabic)
 [![Dataset on HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97%20Dataset-EOU-blue)](https://huggingface.co/datasets/Moustafa3092/EOU)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![CI](https://github.com/Moustafa-abdelsattar/livkit_eou/actions/workflows/ci.yml/badge.svg)](https://github.com/Moustafa-abdelsattar/livkit_eou/actions/workflows/ci.yml)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
 Fine-tuned End-of-Utterance (EOU) detection for Arabic voice agents. Optimized for Modern Standard Arabic and Gulf dialects with specialized handling of Arabic conversational patterns.
 
@@ -20,18 +21,24 @@ Fine-tuned End-of-Utterance (EOU) detection for Arabic voice agents. Optimized f
 - [Performance](#performance)
 - [Usage](#usage)
 - [Testing](#testing)
+- [Evaluation](#evaluation)
+- [Deployment](#deployment)
+- [CI/CD](#cicd)
 - [Citation](#citation)
 
 ---
 
 ## Features
 
-- ✅ **Arabic-Optimized**: Fine-tuned on 57,475 Arabic samples from SADA 2022
-- ✅ **Gulf Dialects**: Specialized for Saudi, UAE, Kuwaiti, and other Gulf variations
-- ✅ **Edge Cases**: Handles hesitations (اممم، يعني) vs closures (شكرا، تمام)
-- ✅ **Production-Ready**: Packaged as reusable SDK for LiveKit agents
-- ✅ **Training Metrics**: 0.07 loss, 97.2% training accuracy, 96.4% validation accuracy
-- ✅ **Fast Inference**: ~20ms GPU, ~50ms CPU
+- **Arabic-Optimized**: Fine-tuned on 57,475 Arabic samples from SADA 2022
+- **Gulf Dialects**: Specialized for Saudi, UAE, Kuwaiti, and other Gulf variations
+- **Edge Cases**: Handles hesitations (اممم، يعني) vs closures (شكرا، تمام)
+- **Production-Ready**: Packaged as reusable SDK for LiveKit agents
+- **CI/CD Pipeline**: Automated lint, test (Python 3.10-3.12), and package build via GitHub Actions
+- **Model Evaluation**: Threshold sweep, F1/precision/recall, confusion matrix, per-category breakdown
+- **Docker Deployment**: Containerized with pre-baked model weights for instant cold-start
+- **Training Metrics**: 0.07 loss, 97.2% training accuracy, 96.4% validation accuracy
+- **Fast Inference**: ~20ms GPU, ~50ms CPU
 
 ---
 
@@ -277,31 +284,113 @@ All Arabic variants: `ar`, `ar-SA`, `ar-EG`, `ar-AE`, `ar-KW`, `ar-QA`, `ar-BH`,
 
 ## Testing
 
-### Quick Test (12 cases)
+### Unit Tests (no GPU required)
+
+Mocked HuggingFace model — runs in CI without GPU or model download:
 
 ```bash
-python test_quick.py
+pip install -e "livekit-plugins-arabic-turn-detector[dev]" pytest-asyncio
+pytest tests/ -v --ignore=tests/test_integration.py -m "not slow"
 ```
 
-Sample output:
+**Coverage**:
+- Detector initialization and configuration
+- Language support (all Arabic variants + fallback)
+- EOU prediction (high/low probability, edge cases, error handling)
+- `load()` factory with threshold overrides
+- Constants validation (model ID, supported languages)
+
+### Integration Tests (requires model download)
+
+Loads the real HuggingFace model and runs predictions on Saudi dialect samples:
+
+```bash
+pytest tests/test_integration.py -m slow -v -s
 ```
-TEXT                 | EXP  |   PROB | PRED | OK
+
+**Includes**:
+- 12 complete utterance tests (greetings, questions, requests, closings)
+- 10 incomplete utterance tests (trailing phrases, hesitations, fillers)
+- Edge cases (short text, single chars, punctuation)
+- Threshold analysis report at 0.5, 0.7, 0.8, 0.9, 0.95, 0.98
+
+---
+
+## Evaluation
+
+Standalone evaluation script with proper ML metrics on Saudi dialect test data (40 labeled samples):
+
+```bash
+# Evaluate at default threshold
+python evaluate.py
+
+# Sweep thresholds to find optimal operating point
+python evaluate.py --sweep
+
+# Detailed per-sample predictions
+python evaluate.py --threshold 0.98 --detailed
+
+# Export results to JSON
+python evaluate.py --sweep --json results.json
+```
+
+**Output**:
+```
 ============================================================
-شكرا جزيلا           | EOU  |  1.000 | EOU  | Y   ✓
-تمام                 | EOU  |  0.988 | EOU  | Y   ✓
-اممممممم             | CONT |  0.987 | EOU  | N   ✗
+  EVALUATION REPORT — Threshold: 0.98
+============================================================
+  Accuracy:  75.0%
+  Precision: 85.0%
+  Recall:    65.0%
+  F1 Score:  73.6%
+  Avg Latency: 45.2ms
+
+  Confusion Matrix:
+                Predicted EOU    Predicted ~EOU
+  Actual EOU      TP=13           FN=7
+  Actual ~EOU     FP=3            TN=17
+============================================================
 ```
 
-### Comprehensive Test (35+ cases)
+**Test categories**: greetings, questions, requests, closings, confirmations, incomplete phrases, trailing phrases, hesitations, fillers.
+
+---
+
+## Deployment
+
+### Docker
+
+Build and run with pre-baked model weights (no download at runtime):
 
 ```bash
-python test_model.py
+# Build image (downloads model during build)
+docker build -t arabic-eou .
+
+# Run with your API keys
+docker run --env-file .env.local -p 8080:8080 arabic-eou
 ```
 
-Provides:
-- Category-wise performance breakdown
-- Threshold analysis (0.3 to 0.98)
-- Detailed accuracy metrics
+### Docker Compose
+
+```bash
+docker compose up --build
+```
+
+For GPU support, uncomment the `deploy.resources` section in `docker-compose.yml`.
+
+---
+
+## CI/CD
+
+Automated pipeline via GitHub Actions on every push/PR to `main`:
+
+| Stage | What It Does | Duration |
+|-------|-------------|----------|
+| **Lint** | `ruff check` + `ruff format --check` | ~6s |
+| **Test** | `pytest` across Python 3.10, 3.11, 3.12 | ~1m30s |
+| **Build** | `python -m build` + `twine check` | ~14s |
+
+The build stage produces a distributable `.whl` package uploaded as a GitHub Actions artifact.
 
 ---
 
@@ -322,14 +411,15 @@ Provides:
 ### Requirements
 
 ```txt
-Python: 3.9+
-livekit-agents>=0.8.0
-livekit-plugins-groq
-livekit-plugins-silero
-transformers>=4.45.2
+Python: 3.10+
+livekit-agents>=1.3.0
+livekit-plugins-turn-detector>=1.3.0
+transformers>=4.45.0
 torch>=2.0.0
-peft>=0.18.0
+huggingface-hub>=0.20.0
 ```
+
+**Dev dependencies**: `pytest`, `pytest-asyncio`, `ruff`, `black`
 
 ---
 
