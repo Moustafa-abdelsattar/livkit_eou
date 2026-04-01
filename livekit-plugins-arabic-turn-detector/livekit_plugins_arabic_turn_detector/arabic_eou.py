@@ -3,12 +3,13 @@ Arabic Turn Detector - Following LiveKit's exact architecture
 """
 
 from __future__ import annotations
-import torch
-from transformers import AutoModelForCausalLM, AutoTokenizer
+
 import logging
 from typing import Any
 
+import torch
 from livekit.agents import llm
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from .models import ARABIC_MODEL_ID, DEFAULT_THRESHOLD, SUPPORTED_LANGUAGES
 
@@ -61,10 +62,7 @@ class ArabicTurnDetector:
         if self._device == "cpu":
             self._model = self._model.to(self._device)
 
-        self._tokenizer = AutoTokenizer.from_pretrained(
-            model_id,
-            trust_remote_code=True
-        )
+        self._tokenizer = AutoTokenizer.from_pretrained(model_id, trust_remote_code=True)
 
         # Get <|im_end|> token ID for EOU prediction
         self._eou_token_id = self._tokenizer.convert_tokens_to_ids("<|im_end|>")
@@ -191,7 +189,7 @@ class ArabicTurnDetector:
                 extra={
                     "eou_probability": prob,
                     "input": last_user_msg[:50],
-                }
+                },
             )
 
             return float(prob)
@@ -213,11 +211,7 @@ class ArabicTurnDetector:
         formatted_text = f"<|im_start|>user\n{text}"
 
         # Tokenize
-        inputs = self._tokenizer(
-            formatted_text,
-            return_tensors="pt",
-            add_special_tokens=False
-        )
+        inputs = self._tokenizer(formatted_text, return_tensors="pt", add_special_tokens=False)
 
         # Move to device
         inputs = {k: v.to(self._device) for k, v in inputs.items()}

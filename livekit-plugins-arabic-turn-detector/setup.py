@@ -2,14 +2,13 @@
 Setup configuration for livekit-plugins-arabic-turn-detector
 """
 
-from setuptools import setup, find_packages
 import os
+
+from setuptools import find_packages, setup
 
 # Read version from version.py
 version_file = os.path.join(
-    os.path.dirname(__file__),
-    "livekit_plugins_arabic_turn_detector",
-    "version.py"
+    os.path.dirname(__file__), "livekit_plugins_arabic_turn_detector", "version.py"
 )
 with open(version_file) as f:
     exec(f.read())

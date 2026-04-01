@@ -8,8 +8,8 @@ Model: https://huggingface.co/Moustafa3092/livekit-turn-detector-arabic
 """
 
 from .arabic_eou import ArabicTurnDetector, load
-from .version import __version__
 from .models import ARABIC_MODEL_ID, DEFAULT_THRESHOLD, SUPPORTED_LANGUAGES
+from .version import __version__
 
 __all__ = [
     "ArabicTurnDetector",
